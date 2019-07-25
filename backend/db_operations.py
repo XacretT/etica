@@ -1,6 +1,8 @@
 #!/usr/bin/python3.6
 # -*- coding: utf-8 -*-
 
+from os import path
+
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, Integer, String, Boolean, DateTime, MetaData, ForeignKey
 
@@ -25,6 +27,7 @@ class EticaDB:
     def __init__(self, dbtype, username='', password='', dbname=''):
         dbtype = dbtype.lower()
         if dbtype in self.DB_ENGINE.keys():
+            dbname = path.abspath(dbname)
             engine_url = self.DB_ENGINE[dbtype].format(DB=dbname)
             self.db_engine = create_engine(engine_url)
             print(self.db_engine)
