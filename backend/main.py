@@ -1,11 +1,14 @@
 #!/usr/bin/python3.6
 # -*- coding: utf-8 -*-
+
+from os import path
+
 from db_operations import EticaDB
 
 from bottle import Bottle, route, run
 from bottle import redirect, request
 
-DB_NAME = 'broadbeams.db'
+DB_NAME = path.abspath('broadbeams.db')
 
 edb = EticaDB('sqlite', dbname=DB_NAME)
 edb.create_db_tables()
@@ -26,6 +29,6 @@ def add_user(uuid):
     result = edb.execute_query(query)
     return result
 
-if __name__ == "__main__":
-   run(host='127.0.0.1', port=8000, reloader=True, quiet=False, debug=True)
 
+if __name__ == "__main__":
+    print("Ok! We are ready!")
