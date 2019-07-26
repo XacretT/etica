@@ -6,7 +6,7 @@ from sqlalchemy import MetaData
 from sqlalchemy import Table, Column
 from sqlalchemy import Integer, String, Boolean, DateTime
 from sqlalchemy import ForeignKey
-from sqlalchemy.sql import expression
+from sqlalchemy import func
 
 from datetime import datetime
 
@@ -45,14 +45,14 @@ class EticaDB:
                          Column('id', Integer, primary_key=True, autoincrement=True),
                          Column('uid', String, nullable=False, unique=True),
                          Column('privatetoken', String, nullable=False),
-                         Column('status', Boolean, default=True)
+                         Column('status', Boolean, nullable=False)
                          )
         addresses   = Table(ADDRESSES, metadata,
                          Column('id', Integer, primary_key=True, autoincrement=True),
                          Column('uid', String, ForeignKey('users.uid')),
                          Column('ip', String, nullable=False),
                          Column('port', String, nullable=False),
-                         Column('timestamp', DateTime, default=datetime.utcnow())
+                         Column('timestamp', DateTime, nullable=False)
                          )
         try:
             metadata.create_all(self.db_engine)
@@ -100,8 +100,11 @@ class EticaDB:
 
     def add_new_user(self, data=''):
         if data == '': return
-        query_1 = f'INSERT INTO users(uid, privatetoken, status) VALUES ("{data["uid"]}", "{data["privatetoken"]}", "1");'
-        query_2 = f'INSERT INTO addresses(uid, ip, port) VALUES ("{data["uid"]}", "{data["ip"]}", "{data["port"]}");'
+        query_1 =   f'INSERT INTO users(uid, privatetoken, status) ' \
+                    f'VALUES ("{data["uid"]}", "{data["privatetoken"]}", "1");'
+        query_2 =   f'INSERT INTO addresses(uid, ip, port, timestamp) ' \
+                    f'VALUES ("{data["uid"]}", "{data["ip"]}", "{data["port"]}", "{datetime.utcnow()}");'
+
         # print(query_1, '\n', query_2)
         with self.db_engine.connect() as connection:
             try:
