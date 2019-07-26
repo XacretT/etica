@@ -6,6 +6,9 @@ from sqlalchemy import MetaData
 from sqlalchemy import Table, Column
 from sqlalchemy import Integer, String, Boolean, DateTime
 from sqlalchemy import ForeignKey
+from sqlalchemy.sql import expression
+
+from datetime import datetime
 
 from sqlalchemy.exc import IntegrityError
 
@@ -38,18 +41,18 @@ class EticaDB:
 
     def create_db_tables(self):
         metadata = MetaData()
-        users    = Table(USERS, metadata,
-                         Column('id', Integer, primary_key=True),
-                         Column('uuid', String, nullable=False, unique=True)
+        users       = Table(USERS, metadata,
+                         Column('id', Integer, primary_key=True, autoincrement=True),
+                         Column('uid', String, nullable=False, unique=True),
+                         Column('privatetoken', String, nullable=False),
+                         Column('status', Boolean, default=True)
                          )
-        address  = Table(ADDRESSES, metadata,
-                         Column('id', Integer, primary_key=True),
-                         Column('user_id', None, ForeignKey('users.id')),
+        addresses   = Table(ADDRESSES, metadata,
+                         Column('id', Integer, primary_key=True, autoincrement=True),
+                         Column('uid', String, ForeignKey('users.uid')),
                          Column('ip', String, nullable=False),
                          Column('port', String, nullable=False),
-                         Column('ttl', String, nullable=False),
-                         Column('status', Boolean, nullable=False),
-                         Column('join_date', DateTime, nullable=False)
+                         Column('timestamp', DateTime, default=datetime.utcnow())
                          )
         try:
             metadata.create_all(self.db_engine)
@@ -94,6 +97,19 @@ class EticaDB:
                 print(e)
             else:
                 print(f'All data from "{table}" has been removed.')
+
+    def add_new_user(self, data=''):
+        if data == '': return
+        query_1 = f'INSERT INTO users(uid, privatetoken, status) VALUES ("{data["uid"]}", "{data["privatetoken"]}", "1");'
+        query_2 = f'INSERT INTO addresses(uid, ip, port) VALUES ("{data["uid"]}", "{data["ip"]}", "{data["port"]}");'
+        # print(query_1, '\n', query_2)
+        with self.db_engine.connect() as connection:
+            try:
+                for query in query_1, query_2:
+                    print(query)
+                    connection.execute(query)
+            except Exception as e:
+                print(e)
 
 
 if __name__ == '__main__':

@@ -23,12 +23,18 @@ def list_users():
     return output
 
 
-@route('/add/<uuid>')
-def add_user(uuid):
-    query = f'INSERT INTO users(uuid) VALUES ({uuid});'
-    result = edb.execute_query(query)
+@route('/add', method='GET')
+def add_user():
+    uid = request.query.uid
+    privatetoken = request.query.privatetoken
+    ip = request.query.ip
+    port = request.query.port
+    # status = True
+
+    data = {'uid': uid, 'privatetoken': privatetoken, 'ip': ip, 'port': port}
+    result = edb.add_new_user(data)
     return result
 
 
 if __name__ == "__main__":
-    print("Ok! We are ready!")
+    run(host='127.0.0.1', port=8000, reloader=True, quiet=False, debug=True)
