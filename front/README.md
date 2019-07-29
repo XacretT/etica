@@ -1,6 +1,6 @@
-# etica-pront
+# etica-front
 
-> Etica Payload Delivery System's main front-end project
+> Front-end for Etica payload delivery system
 
 ## Build Setup
 

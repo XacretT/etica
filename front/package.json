@@ -1,7 +1,7 @@
 {
-  "name": "etica-pront",
+  "name": "etica-front",
   "version": "1.0.0",
-  "description": "Etica Payload Delivery System's main front-end project",
+  "description": "Front-end for Etica payload delivery system",
   "author": "Michael Kiselov <xacrett@gmail.com>",
   "private": true,
   "scripts": {
@@ -11,6 +11,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "buefy": "^0.7.10",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
