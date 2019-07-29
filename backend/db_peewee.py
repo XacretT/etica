@@ -59,8 +59,9 @@ def add_user(data=''):
 def add_address(data=''):
     if data == '' : return
 
+    user_id = Users.select(Users.user_id).where(Users.uid == data['uid'])
     address = Addresses.insert(
-        user_id=Users.select(Users.user_id).where(Users.uid == data['uid']).exists(),
+        user_id=user_id,
         ip=data['ip'],
         port=data['port']
     ).on_conflict('replace').execute()
@@ -68,10 +69,16 @@ def add_address(data=''):
     return print('address_id:', address, data)
 
 
-def search_user(uid):
+def search_user(uid=''):
     if uid == '' : return
 
-    
+    query = (Addresses
+             .select(Addresses.ip, Addresses.port)
+             .join(Users)
+             .where(Users.uid == uid))
+
+    for address in query:
+        return address.ip, address.port
 
 
 def delete_user(data=''):
@@ -86,8 +93,6 @@ def delete_user(data=''):
 
 
 def clear_addresses():
-    if data == '' : return
-
     query = Addresses.select(Addresses.user_id)\
         .join(Users, on=(Addresses.user_id == Users.user_id))\
         .where(Users.user_id == None)
@@ -101,15 +106,20 @@ def clear_addresses():
 
 
 def show_all():
-    users = Users.select()
-    address = Addresses.select()
+    query = (Users.select(Users, Addresses)
+             .join(Addresses))
+    print(query)
+    for raw in query:
+        print(raw.user_id, raw.uid, raw.private_token, raw.addresses.ip, raw.addresses.port, raw.addresses.timestamp, raw.status)
 
 
 if __name__ == '__main__':
     create_tables()
 
-    data = {'uid': 'test', 'private_token': 'private', 'ip': '127.0.0.2', 'port': '8080'}
+    data = {'uid': 'test4', 'private_token': 'private4', 'ip': '127.0.0.4', 'port': '8080'}
     add_user(data)
     add_address(data)
-    delete_user(data)
-    clear_addresses()
+    print(search_user('test'))
+    show_all()
+    #delete_user(data)
+    #clear_addresses()
