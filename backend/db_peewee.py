@@ -93,9 +93,9 @@ def delete_user(data=''):
 
 
 def clear_addresses():
-    query = Addresses.select(Addresses.user_id)\
-        .join(Users, on=(Addresses.user_id == Users.user_id))\
-        .where(Users.user_id == None)
+    query = (Addresses.select(Addresses.user_id)
+             .join(Users, on=(Addresses.user_id == Users.user_id))
+             .where(Users.user_id == None))
 
     count = 0
     for q in query:
@@ -110,7 +110,14 @@ def show_all():
              .join(Addresses))
     print(query)
     for raw in query:
-        print(raw.user_id, raw.uid, raw.private_token, raw.addresses.ip, raw.addresses.port, raw.addresses.timestamp, raw.status)
+        print(raw.user_id,
+              raw.uid,
+              raw.private_token,
+              raw.addresses.ip,
+              raw.addresses.port,
+              raw.addresses.timestamp,
+              raw.status
+              )
 
 
 if __name__ == '__main__':
