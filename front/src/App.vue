@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <img src="./assets/logo-circular.svg"
-    alt="Etica - Payload Delivery System"
-    height="125px"
-    width="125px" >
     <router-view/>
   </div>
 </template>
@@ -20,13 +16,14 @@ export default {
 
 // Defining main theme colors
 $primary-light-background: #27293d;
-$primary-dark-background: #1e1e2f;
+$primary-dark-background: #1e1e2e;
 
 $primary-yellow-light: #F6F01B;
 $primary-yellow-dark: #F9D417;
 $primary-gradient-light: #87157C;
 $primary-gradient-dark: #130742;
 
+$primary-text-color: hsla(0,0%,100%,.8);
 $primary: $primary-yellow-light;
 $primary-invert: findColorInvert($primary);
 
@@ -51,12 +48,18 @@ $link-hover: $primary-yellow-dark;
 
 //Body styles
 $body-background-color: $primary-dark-background;
-$body-color: $white;
+$body-color: $primary-text-color;
+$navbar-background-color: none;
+$navbar-item-color: $primary-text-color;
+$navbar-item-img-max-height: 3.5rem !important;
+$navbar-height: 4rem !important;
+$navbar-padding-vertical: 2rem;
 
 //Typography
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-$family-serif: 'Montserrat', 'Helvetica', 'serif';
+$family-serif: 'BlinkMacSystemFont','-apple-system','Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue','Helvetica','Arial','sans-serif';
 $family-primary: $family-serif;
+$title-color: $primary-text-color !default;
+$title-weight: $weight-light !important;
 
 // Import Bulma and Buefy styles
 @import "~bulma";
