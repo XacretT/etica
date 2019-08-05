@@ -20,8 +20,8 @@ $primary-dark-background: #1e1e2e;
 
 $primary-yellow-light: #F6F01B;
 $primary-yellow-dark: #F9D417;
-$primary-gradient-light: #87157C;
-$primary-gradient-dark: #130742;
+$primary-gradient-light: #ff8d72;
+$primary-gradient-dark: #ff6491;
 
 $primary-text-color: hsla(0,0%,100%,.8);
 $primary: $primary-yellow-light;
@@ -52,7 +52,7 @@ $body-color: $primary-text-color;
 $navbar-background-color: none;
 $navbar-item-color: $primary-text-color;
 $navbar-item-img-max-height: 3.5rem !important;
-$navbar-height: 4rem !important;
+$navbar-height: 4rem;
 $navbar-padding-vertical: 2rem;
 
 //Typography
@@ -60,6 +60,8 @@ $family-serif: 'BlinkMacSystemFont','-apple-system','Segoe UI','Roboto','Oxygen'
 $family-primary: $family-serif;
 $title-color: $primary-text-color !default;
 $title-weight: $weight-light !important;
+$menu-item-color: $primary-text-color;
+$menu-label-color:  hsla(0,0%,100%,.5);
 
 // Import Bulma and Buefy styles
 @import "~bulma";

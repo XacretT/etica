@@ -3,8 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
 import Buefy from 'buefy'
+import SideBar from './components/SideBar'
+import NavBar from './components/NavBar'
+
+Vue.component('sidebar', SideBar)
+Vue.component('navbar', NavBar)
 
 Vue.use(Buefy)
 
