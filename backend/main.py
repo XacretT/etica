@@ -1,39 +1,36 @@
 #!/usr/bin/python3.6
 # -*- coding: utf-8 -*-
 
-from os import path
-
-from db_operations import EticaDB
+from db_peewee import *
 
 from bottle import Bottle, route, run
 from bottle import redirect, request
+from bottle import template
 
-DB_NAME = path.abspath('broadbeams.db')
-
-edb = EticaDB('sqlite', dbname=DB_NAME)
-edb.create_db_tables()
-
+create_tables()
 app = Bottle()
+
 
 @route('/')
 @route('/users')
 def list_users():
-    users = 'users'
-    output = edb.print_all_data(users)
+    output = template('templates/list.tpl', rows=show_all())
     return output
 
 
 @route('/add', method='GET')
 def add_user():
     uid = request.query.uid
-    privatetoken = request.query.privatetoken
+    branch = request.query.branch
     ip = request.query.ip
     port = request.query.port
-    # status = True
 
-    data = {'uid': uid, 'privatetoken': privatetoken, 'ip': ip, 'port': port}
-    result = edb.add_new_user(data)
-    return result
+    data = {'uid': uid,
+            'branch': branch,
+            'ip': ip,
+            'port': port}
+
+    return add_new_user(data)
 
 
 if __name__ == "__main__":
